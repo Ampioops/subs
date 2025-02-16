@@ -1,0 +1,27 @@
+services:
+  db:
+    image: postgres:15
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres_password
+      POSTGRES_DB: user_notification_database
+    ports:
+      - "5434:5432"
+    volumes:
+      - user_notification_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: user_notification
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/user_notification_database
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres_password
+    ports:
+      - "8081:8080"
+
+volumes:
+  user_notification_data:

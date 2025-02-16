@@ -1,0 +1,31 @@
+server:
+  port: 8889
+  error:
+    include-message: always
+
+spring:
+  application:
+    name: user-notifications
+  datasource:
+    driver: org.postgresql.Driver
+    url: jdbc:postgresql://db:5432/user_notification_database
+    username: postgres
+    password: postgres_password
+    jpa:
+      hibernate:
+        ddl-auto: create-drop
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.PostgreSQLDialect
+      show-sql: true
+
+  liquibase:
+    enabled: false
+    change-log: db/changelog/main-changelog.xml
+    url: jdbc:postgresql://db:5432/user_notification_database
+    user: postgres
+    password: postgres_password
+    parameters:
+      user_name: postgres
+  main:
+    web-application-type: servlet
