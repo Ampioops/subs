@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    driver: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/user_notifications_dev_db
+    username: postgres
+    password: 899
+    jpa:
+      hibernate:
+        ddl-auto: create-drop
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+
+  liquibase:
+    enabled: false
+#  change-log: db/changelog/main-changelog.xml
+#  url: jdbc:postgresql://localhost:5434/user_notification_database
+#  user: postgres
+#  password: postgres_password
+#  parameters:
+#    user_name: postgres
