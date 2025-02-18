@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>om</groupId>
-    <artifactId>user-notifications</artifactId>
+    <artifactId>subs</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>user-notifications</name>
+    <name>subs</name>
     <description>User notifications service</description>
     <url/>
     <licenses>

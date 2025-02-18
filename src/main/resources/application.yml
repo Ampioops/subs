@@ -7,6 +7,6 @@ spring:
   profiles:
     active: dev
   application:
-    name: user-notifications
+    name: subs
   main:
     web-application-type: servlet

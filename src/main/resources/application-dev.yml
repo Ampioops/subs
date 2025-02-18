@@ -1,16 +1,16 @@
 spring:
   datasource:
-    driver: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/user_notifications_dev_db
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/subs_dev_db
     username: postgres
     password: 899
-    jpa:
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
       hibernate:
-        ddl-auto: create-drop
-      properties:
-        hibernate:
-          dialect: org.hibernate.dialect.PostgreSQLDialect
-    show-sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 
   liquibase:
     enabled: false
