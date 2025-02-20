@@ -5,23 +5,23 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres_password
-      POSTGRES_DB: user_notification_database
+      POSTGRES_DB: subs_dev_db
     ports:
       - "5434:5432"
     volumes:
-      - user_notification_data:/var/lib/postgresql/data
+      - subs_dev_db:/var/lib/postgresql/data
 
   app:
     build: .
-    container_name: user_notification
+    container_name: subs
     depends_on:
       - db
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/user_notification_database
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/subs_dev_db
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres_password
     ports:
       - "8081:8080"
 
 volumes:
-  user_notification_data:
+  subs_dev_db:

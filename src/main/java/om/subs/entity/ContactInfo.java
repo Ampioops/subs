@@ -16,6 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ContactInfo {
     @Id
+    @Column(name = "user_id")
     private UUID userId;
 
     @Column(name = "number_phone")

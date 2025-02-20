@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 @RestController
 @RequestMapping("/subs/contact_information")
 @RequiredArgsConstructor //Автоматом конструктор создает DI
@@ -47,8 +49,8 @@ public class ContactInfoController {
         return contactInfoService.updateUserContactInfo(userId, request);
     }
 
-    @PostMapping
-    public ContactInfoResponse createUserContactInfo(@RequestBody ContactInfoRequest request){
+    @PostMapping(value = "/{userId}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    public ContactInfoResponse createUserContactInfo(@RequestBody ContactInfoRequest request, @PathVariable UUID userId) {
         return contactInfoService.createContactInfo(request);
     }
 }

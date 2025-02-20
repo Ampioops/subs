@@ -22,7 +22,7 @@ public class SubscriptionController {
 
     private final SubscriptionService subscriptionService;
 
-    @PutMapping
+    @PostMapping("/")
     public SubscriptionResponse createSubscription(@RequestBody SubscriptionRequest request) {
         return subscriptionService.createSubscription(request);
     }
@@ -32,7 +32,7 @@ public class SubscriptionController {
         return subscriptionService.updateSubscriptionInfo(userId, request);
     }
 
-    @DeleteMapping(value = "{id}")
+    @DeleteMapping(value = "/{id}")
     public void deleteSubscription(@PathVariable UUID id) {
         subscriptionService.deleteSubscriptionById(id);
     }

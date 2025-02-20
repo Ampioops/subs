@@ -21,7 +21,7 @@ public class Subscription {
     private UUID id;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private ContactInfo contactInfo;
 
     @Column(name = "type")
