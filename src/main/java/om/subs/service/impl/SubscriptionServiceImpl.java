@@ -13,7 +13,6 @@ import om.subs.service.SubscriptionService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Service

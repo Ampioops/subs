@@ -1,0 +1,30 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="v1-1" author="eugene (generated)">
+        <preConditions onFail="MARK_RAN">
+            <runningAs username="postgres"/>
+            <not>
+                <tableExists tableName="subscriptions"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="subscriptions">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="created_at" type="timestamp(6)"/>
+            <column name="reference_id" type="uuid"/>
+            <column name="user_id" type="uuid"/>
+            <column name="type" type="varchar(255)"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="subscriptions"
+                                 baseColumnNames="user_id"
+                                 constraintName="subscriptions_user_id_key"
+                                 referencedTableName="contact_info"
+                                 referencedColumnNames="user_id"/>
+    </changeSet>
+
+</databaseChangeLog>
