@@ -1,2 +1,2 @@
-# user-notification
-User notification service
+# Subscription service
+Subscription service
