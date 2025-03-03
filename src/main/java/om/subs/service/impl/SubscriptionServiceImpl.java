@@ -10,7 +10,9 @@ import om.subs.model.response.SubscriptionResponse;
 import om.subs.repository.ContactInfoRepository;
 import om.subs.repository.SubscriptionRepository;
 import om.subs.service.SubscriptionService;
+import om.subs.specification.SubscriptionSpecification;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -22,6 +24,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     private final SubscriptionRepository subscriptionRepository;
     private final SubscriptionMapper subscriptionMapper;
     private final ContactInfoRepository contactInfoRepository;
+    private final SubscriptionSpecification subscriptionSpecification;
 
     @Override
     public SubscriptionResponse createSubscription(SubscriptionRequest request) {
@@ -36,27 +39,31 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public SubscriptionResponse updateSubscriptionInfo(UUID id, SubscriptionRequest request) {
+    public SubscriptionResponse updateSubscriptionInfo(Integer id, SubscriptionRequest request) {
         return null;
     }
 
     @Override
-    public void deleteSubscriptionById(UUID id) {
+    public void deleteSubscriptionById(Integer id) {
 
     }
 
     @Override
     public Page<SubscriptionResponse> getSubscriptions(SubscriptionParam params, Integer offset, Integer limit) {
+        PageRequest pageRequest = PageRequest.of(offset, limit);
+        return subscriptionRepository.findAll(subscriptionSpecification.build(params), pageRequest)
+                .map(subscriptionMapper::toResponse);
+    }
+
+    @Override
+    public SubscriptionResponse getSubscriptionById(Integer id) {
         return null;
     }
 
     @Override
-    public SubscriptionResponse getSubscriptionById(UUID id) {
-        return null;
-    }
-
-    @Override
-    public Page<SubscriptionResponse> getSubscriptionsByUser(UUID userId) {
-        return null;
+    public Page<SubscriptionResponse> getSubscriptionsByUser(Integer userId, Integer offset, Integer limit) {
+        PageRequest pageRequest = PageRequest.of(offset, limit);
+        return subscriptionRepository.findByContactInfo_UserId(userId, pageRequest)
+                .map(subscriptionMapper::toResponse);
     }
 }

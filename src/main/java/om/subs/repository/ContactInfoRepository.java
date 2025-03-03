@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface ContactInfoRepository extends JpaRepository<ContactInfo, UUID> {
+public interface ContactInfoRepository extends JpaRepository<ContactInfo, Integer> {
 }

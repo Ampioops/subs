@@ -14,18 +14,18 @@ public interface SubscriptionService {
     SubscriptionResponse createSubscription(@NotNull SubscriptionRequest request);
 
     @NotNull
-    SubscriptionResponse updateSubscriptionInfo(@NotNull UUID id, @NotNull SubscriptionRequest request);
+    SubscriptionResponse updateSubscriptionInfo(@NotNull Integer id, @NotNull SubscriptionRequest request);
 
     @NotNull
-    void deleteSubscriptionById(@NotNull UUID id);
+    void deleteSubscriptionById(@NotNull Integer id);
 
     @NotNull
     Page<SubscriptionResponse> getSubscriptions(SubscriptionParam params, Integer offset, Integer limit);
 
     @NotNull
-    SubscriptionResponse getSubscriptionById(@NotNull UUID id);
+    SubscriptionResponse getSubscriptionById(@NotNull Integer id);
 
     @NotNull
-    Page<SubscriptionResponse> getSubscriptionsByUser (@NotNull UUID userId);
+    Page<SubscriptionResponse> getSubscriptionsByUser (@NotNull Integer userId, Integer offset, Integer limit);
 
 }

@@ -12,12 +12,12 @@
         </preConditions>
 
         <createTable tableName="subscriptions">
-            <column name="id" type="uuid">
+            <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false" unique="true"/>
             </column>
             <column name="created_at" type="timestamp(6)"/>
-            <column name="reference_id" type="uuid"/>
-            <column name="user_id" type="uuid"/>
+            <column name="reference_id" type="int"/>
+            <column name="user_id" type="int"/>
             <column name="type" type="varchar(255)"/>
         </createTable>
         <addForeignKeyConstraint baseTableName="subscriptions"

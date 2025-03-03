@@ -13,8 +13,8 @@ import java.util.UUID;
 @Accessors(chain = true)
 @Builder
 public class ContactInfoResponse {
-    private UUID userId;
+    private Integer userId;
     private String numberPhone;
     private String email;
-    private Subscription subscription;
+    private SubscriptionResponse subscription;
 }

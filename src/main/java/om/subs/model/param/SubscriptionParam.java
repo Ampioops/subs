@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Setter
 @Getter
@@ -13,13 +12,13 @@ import java.util.UUID;
 public class SubscriptionParam {
 
     @Schema(description = "Содержит id пользователя")
-    private UUID userIdCont;
+    private Integer userIdCont;
 
     @Schema(description = "Содержит id объекта подписки")
-    private UUID referenceIdCont;
+    private Integer referenceIdCont;
 
     @Schema(description = "Создано после определенного времени")
-    private LocalDateTime createdFrom;
+    private LocalDateTime createdAfter;
 
     @Schema(description = "Создано до определенного времени")
     private LocalDateTime createdBefore;

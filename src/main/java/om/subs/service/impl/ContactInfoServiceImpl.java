@@ -37,12 +37,12 @@ public class ContactInfoServiceImpl implements ContactInfoService {
 
     @NotNull
     @Transactional
-    public ContactInfoResponse updateUserContactInfo(UUID id, ContactInfoRequest request) {
+    public ContactInfoResponse updateUserContactInfo(Integer id, ContactInfoRequest request) {
         return null;
     }
 
     @NotNull
-    public void deleteContactInfoById(UUID id) {
+    public void deleteContactInfoById(Integer id) {
 
     }
 
@@ -52,7 +52,7 @@ public class ContactInfoServiceImpl implements ContactInfoService {
     }
 
     @NotNull
-    public ContactInfoResponse getContactInfoByUserId(UUID userId) {
+    public ContactInfoResponse getContactInfoByUserId(Integer userId) {
         return null;
     }
 }

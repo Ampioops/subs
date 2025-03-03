@@ -1,0 +1,33 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="v1-4" author="EUGENE (GENERATED)">
+        <preConditions onFail="MARK_RAN">
+            <runningAs  username="postgres"/>
+            <tableExists tableName="subscriptions"/>
+        </preConditions>
+
+        <insert tableName="subscriptions">
+            <column name="user_id" value="4"/>
+            <column name="type" value="BOOK_DELETION"/>
+            <column name="reference_id" value="101"/>
+            <column name="created_at" valueDate="2025-02-24T10:00:00"/>
+        </insert>
+        <insert tableName="subscriptions">
+            <column name="user_id" value="5"/>
+            <column name="type" value="BOOK_CREATION"/>
+            <column name="reference_id" value="102"/>
+            <column name="created_at" valueDate="2025-01-24T10:00:00"/>
+        </insert>
+        <insert tableName="subscriptions">
+            <column name="user_id" value="6"/>
+            <column name="type" value="BOOK_DELETION"/>
+            <column name="reference_id" value="103"/>
+            <column name="created_at" valueDate="2024-02-24T10:00:00"/>
+        </insert>
+
+    </changeSet>
+
+</databaseChangeLog>

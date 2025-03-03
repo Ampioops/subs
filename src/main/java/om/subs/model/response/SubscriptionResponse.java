@@ -13,9 +13,9 @@ import java.util.UUID;
 @Accessors(chain = true)
 @Builder
 public class SubscriptionResponse {
-    private UUID id;
+    private Integer id;
     private ContactInfoResponse contactInfo;
     private String type;
-    private UUID referenceId;
+    private Integer referenceId;
     private LocalDateTime createdAt;
 }

@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
 
 @Data
 @Builder
@@ -17,7 +16,7 @@ import java.util.UUID;
 public class ContactInfo {
     @Id
     @Column(name = "user_id")
-    private UUID userId;
+    private Integer userId;
 
     @Column(name = "number_phone")
     private String numberPhone;

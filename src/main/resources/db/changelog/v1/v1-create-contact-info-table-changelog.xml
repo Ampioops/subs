@@ -12,7 +12,7 @@
         </preConditions>
 
         <createTable tableName="contact_info">
-            <column name="user_id" type="uuid">
+            <column name="user_id" type="int">
                 <constraints nullable="false" unique="true"/>
             </column>
             <column name="number_phone" type="varchar(255)"/>

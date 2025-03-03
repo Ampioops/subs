@@ -26,7 +26,7 @@ public class ContactInfoController {
     private final ContactInfoService contactInfoService;
 
     @GetMapping(value = "/{userId}")
-    public ContactInfoResponse getContactInfoByUserId(@PathVariable UUID userId) {
+    public ContactInfoResponse getContactInfoByUserId(@PathVariable Integer userId) {
         return contactInfoService.getContactInfoByUserId(userId);
     }
 
@@ -40,17 +40,17 @@ public class ContactInfoController {
     }
 
     @DeleteMapping("/{userId}")
-    public void deleteContactInfoByUserId(@PathVariable UUID userId) {
+    public void deleteContactInfoByUserId(@PathVariable Integer userId) {
         contactInfoService.deleteContactInfoById(userId);
     }
 
     @PatchMapping(value = "{userId}")
-    public ContactInfoResponse updateUserContactInfo(@PathVariable UUID userId, @RequestBody ContactInfoRequest request){
+    public ContactInfoResponse updateUserContactInfo(@PathVariable Integer userId, @RequestBody ContactInfoRequest request){
         return contactInfoService.updateUserContactInfo(userId, request);
     }
 
     @PostMapping(value = "/{userId}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public ContactInfoResponse createUserContactInfo(@RequestBody ContactInfoRequest request, @PathVariable UUID userId) {
+    public ContactInfoResponse createUserContactInfo(@RequestBody ContactInfoRequest request, @PathVariable Integer userId) {
         return contactInfoService.createContactInfo(request);
     }
 }

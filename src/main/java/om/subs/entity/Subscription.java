@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import om.subs.model.enums.SubscriptionType;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -18,17 +19,18 @@ import java.util.UUID;
 public class Subscription {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private Integer id;
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private ContactInfo contactInfo;
 
     @Column(name = "type")
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private SubscriptionType type;
 
     @Column(name = "reference_id")
-    private UUID referenceId;
+    private Integer referenceId;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

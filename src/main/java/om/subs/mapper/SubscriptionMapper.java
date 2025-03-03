@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface SubscriptionMapper {
 
+    @Mapping(target = "contactInfo.subscription", ignore = true)
     SubscriptionResponse toResponse(Subscription subscription);
     Subscription toSubscription(SubscriptionRequest subscriptionRequest);
 

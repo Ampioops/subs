@@ -13,7 +13,7 @@ import java.util.UUID;
 @Accessors(chain = true)
 @Builder
 public class ContactInfoRequest {
-    private UUID userId;
+    private Integer userId;
     private String numberPhone;
     private String email;
 }

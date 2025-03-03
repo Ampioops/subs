@@ -15,8 +15,8 @@ import java.util.UUID;
 @Accessors(chain = true)
 @Builder
 public class SubscriptionRequest {
-    private UUID userId;
+    private Integer userId;
     private String type;
-    private UUID referenceId;
+    private Integer referenceId;
     private LocalDateTime createdAt;
 }

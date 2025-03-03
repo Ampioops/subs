@@ -13,14 +13,14 @@ public interface ContactInfoService {
     ContactInfoResponse createContactInfo(@NotNull ContactInfoRequest request);
 
     @NotNull
-    ContactInfoResponse updateUserContactInfo(@NotNull UUID userId, @NotNull ContactInfoRequest request);
+    ContactInfoResponse updateUserContactInfo(@NotNull Integer userId, @NotNull ContactInfoRequest request);
 
     @NotNull
-    void deleteContactInfoById(@NotNull UUID id);
+    void deleteContactInfoById(@NotNull Integer id);
 
     @NotNull
     Page<ContactInfoResponse> getUsersContactInfo(ContactInfoParam params, Integer offset, Integer limit);
 
     @NotNull
-    ContactInfoResponse getContactInfoByUserId(@NotNull UUID userId);
+    ContactInfoResponse getContactInfoByUserId(@NotNull Integer userId);
 }
