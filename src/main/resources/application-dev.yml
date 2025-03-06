@@ -19,3 +19,11 @@ spring:
     user: postgres
     password: 899
     drop-first: true
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    properties:
+      spring:
+        json:
+          trusted:
+            packages: "*"
