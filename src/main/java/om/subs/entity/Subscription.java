@@ -34,4 +34,5 @@ public class Subscription {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
 }

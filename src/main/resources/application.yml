@@ -11,5 +11,3 @@ spring:
   main:
     web-application-type: servlet
 
-
-

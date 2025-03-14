@@ -1,6 +1,7 @@
 package om.subs.service;
 
 import jakarta.validation.constraints.NotNull;
+import om.subs.model.event.BookEvent;
 import om.subs.model.param.SubscriptionParam;
 import om.subs.model.request.SubscriptionRequest;
 import om.subs.model.response.SubscriptionResponse;
@@ -28,4 +29,9 @@ public interface SubscriptionService {
     @NotNull
     Page<SubscriptionResponse> getSubscriptionsByUser (@NotNull Integer userId, Integer offset, Integer limit);
 
+    @NotNull
+    void processBookEventDeleted (BookEvent bookEvent);
+
+    @NotNull
+    void processBookEventCreated (BookEvent bookEvent);
 }

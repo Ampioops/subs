@@ -24,7 +24,16 @@
             <column name="number_phone" value="+3333333333333"/>
             <column name="email" value="EMAIL4"/>
         </insert>
-
+        <insert tableName="contact_info">
+            <column name="user_id" value="7" />
+            <column name="number_phone" value="+77777777777777"/>
+            <column name="email" value="EMAIL5"/>
+        </insert>
+        <insert tableName="contact_info">
+            <column name="user_id" value="8" />
+            <column name="number_phone" value="+888888888888888"/>
+            <column name="email" value="EMAIL6"/>
+        </insert>
     </changeSet>
 
 </databaseChangeLog>
