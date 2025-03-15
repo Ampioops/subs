@@ -2,6 +2,7 @@ package om.subs.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import om.subs.client.LibraryClient;
 import om.subs.entity.ContactInfo;
 import om.subs.entity.Subscription;
 import om.subs.mapper.SubscriptionMapper;
@@ -35,7 +36,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     private final ContactInfoRepository contactInfoRepository;
     private final SubscriptionSpecification subscriptionSpecification;
     private final KafkaTemplate<String, SubEvent> kafkaTemplate;
-    private final WebClient webClient;
+    private final LibraryClient libraryClient;
 
     @Override
     public SubscriptionResponse createSubscription(SubscriptionRequest request) {
@@ -113,7 +114,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
                 continue;
             }
 
-            Mono<BookResponseDTO> bookMono = getBookById(bookId);
+            Mono<BookResponseDTO> bookMono = libraryClient.getBookById(bookId);
 
             bookMono.flatMap(book -> {
                 SubEvent event = new SubEvent();
@@ -129,11 +130,5 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     // Я должен найти все подписки пользователей на этот жанр
     // Отправить в кафку событие с данными о: Айди пользователя, название новой книги, жанр, автор
     // Айди взять из БД, название книги получить через запрос в монолит
-    private Mono<BookResponseDTO> getBookById(Integer bookId) {
-        return webClient.get()
-                .uri("/book/{bookId}", bookId) // Эндпоинт монолита
-                .retrieve()
-                .bodyToMono(BookResponseDTO.class); // Десериализация ответа в BookResponseDTO
-    }
 
 }

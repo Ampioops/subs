@@ -1,20 +1,15 @@
-package om.subs.client;
+package om.subs.client.config;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Flux;
 
-@Component
-@RequiredArgsConstructor
-public class LibraryClientConfig {
-
+@Configuration
+public class WebClientConfig {
     @Bean
     public WebClient webClient(WebClient.Builder builder) {
         return builder
                 .baseUrl("http://localhost:8080/library") // Базовый URL
                 .build();
     }
-
 }
