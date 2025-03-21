@@ -1,13 +1,11 @@
 package om.subs.service;
 
 import jakarta.validation.constraints.NotNull;
-import om.subs.model.event.BookEvent;
 import om.subs.model.param.SubscriptionParam;
 import om.subs.model.request.SubscriptionRequest;
 import om.subs.model.response.SubscriptionResponse;
+import org.common.common_utils.event.BookEvent;
 import org.springframework.data.domain.Page;
-
-import java.util.UUID;
 
 public interface SubscriptionService {
 

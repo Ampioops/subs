@@ -1,8 +1,8 @@
-package om.subs.config.producer;
+package om.subs.kafka.config;
 
-import om.subs.model.event.SubEvent;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.common.common_utils.event.NotificationEvent;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-public class KafkaProducerConfig {
+public class NotificationEventKafkaProducerConfig {
 
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;
@@ -31,14 +31,14 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    public ProducerFactory<String, SubEvent> producerFactory(
+    public ProducerFactory<String, NotificationEvent> producerFactory(
     ){
         return new DefaultKafkaProducerFactory<>(producerConfig());
     }
 
     @Bean
-    public KafkaTemplate<String, SubEvent> kafkaTemplate(
-            ProducerFactory<String, SubEvent> producerFactory
+    public KafkaTemplate<String, NotificationEvent> kafkaTemplate(
+            ProducerFactory<String, NotificationEvent> producerFactory
     ){
         return new KafkaTemplate<>(producerFactory);
     }

@@ -1,17 +1,17 @@
-package om.subs.config.listener;
+package om.subs.kafka.consumer;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import om.subs.model.event.BookEvent;
 import om.subs.service.SubscriptionService;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.common.common_utils.event.BookEvent;
+import org.common.common_utils.event.enums.BookEventType;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class BookEventConsumer {
+public class BookEventKafkaConsumer {
 
     private final SubscriptionService subscriptionService;
 
@@ -20,8 +20,8 @@ public class BookEventConsumer {
         log.info("Получено событие: {}", event);
 
         switch (event.getEventType()) {
-            case "CREATED" -> subscriptionService.processBookEventCreated(event);
-            case "DELETED" -> subscriptionService.processBookEventDeleted(event);
+            case BookEventType.CREATE -> subscriptionService.processBookEventCreated(event);
+            case BookEventType.DELETE -> subscriptionService.processBookEventDeleted(event);
             default -> log.warn("Неизвестный тип события: {}", event.getEventType());
         }
     }

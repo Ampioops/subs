@@ -5,24 +5,24 @@ import lombok.extern.slf4j.Slf4j;
 import om.subs.client.LibraryClient;
 import om.subs.entity.ContactInfo;
 import om.subs.entity.Subscription;
+import om.subs.kafka.producer.NotificationEventKafkaProducer;
 import om.subs.mapper.SubscriptionMapper;
 import om.subs.model.enums.SubscriptionType;
-import om.subs.model.event.BookEvent;
-import om.subs.model.event.SubEvent;
+import om.subs.service.SubscriptionService;
 import om.subs.model.param.SubscriptionParam;
 import om.subs.model.request.SubscriptionRequest;
 import om.subs.model.response.SubscriptionResponse;
 import om.subs.repository.ContactInfoRepository;
 import om.subs.repository.SubscriptionRepository;
-import om.subs.service.SubscriptionService;
 import om.subs.specification.SubscriptionSpecification;
-import org.common.common_utils.response.*;
+import org.common.common_utils.event.BookEvent;
+import org.common.common_utils.event.NotificationEvent;
+import org.common.common_utils.response.BookResponseDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
+import reactor.core.publisher.Flux;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +35,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     private final SubscriptionMapper subscriptionMapper;
     private final ContactInfoRepository contactInfoRepository;
     private final SubscriptionSpecification subscriptionSpecification;
-    private final KafkaTemplate<String, SubEvent> kafkaTemplate;
+    private final NotificationEventKafkaProducer notificationEventKafkaProducer;
     private final LibraryClient libraryClient;
 
     @Override
@@ -89,7 +89,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Override
     public void processBookEventCreated(BookEvent bookEvent) {
-
         List<SubscriptionType> createTypes = new ArrayList<>();
 
         if (bookEvent.getAuthorId() != null) {
@@ -100,35 +99,57 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         }
 
         List<Subscription> createSubscriptions = subscriptionRepository.findByTypeIn(createTypes);
-
         Integer bookId = bookEvent.getBookId();
 
-        for (Subscription subscription : createSubscriptions) {
-            if (subscription.getType().equals(SubscriptionType.CREATE_BOOK_BY_SPECIFIC_AUTHOR)
-                    && !subscription.getReferenceId().equals(bookEvent.getAuthorId())) {
-                continue;
-            }
-
-            if (subscription.getType().equals(SubscriptionType.CREATE_BOOK_BY_SPECIFIC_GENRE)
-                    && !subscription.getReferenceId().equals(bookEvent.getGenreId())) {
-                continue;
-            }
-
-            Mono<BookResponseDTO> bookMono = libraryClient.getBookById(bookId);
-
-            bookMono.flatMap(book -> {
-                SubEvent event = new SubEvent();
-                event.setUserId(subscription.getContactInfo().getUserId());
-                event.setBookTitle(book.getTitle());
-                event.setGenre(book.getGenre() != null ? book.getGenre().getName() : "Неизвестный жанр");
-                event.setAuthorId(book.getAuthor() != null ? book.getAuthor().getId() : null);
-
-                return Mono.fromRunnable(() -> kafkaTemplate.send("sub-events", event));
-            }).subscribe(); // Запускаем асинхронную обработку
-        }
+        libraryClient.getBookById(bookId)
+                .flatMapMany(book -> Flux.fromIterable(createSubscriptions)
+                        .filter(subscription -> isSubscriptionRelevant(subscription, bookEvent))
+                        .map(subscription -> generateNotificationEvent(subscription, book)) // Формируем NotificationEvent
+                )
+                .doOnNext(notificationEventKafkaProducer::send) // Отправляем уже сформированное NotificationEvent
+                .subscribe();
     }
-    // Я должен найти все подписки пользователей на этот жанр
-    // Отправить в кафку событие с данными о: Айди пользователя, название новой книги, жанр, автор
-    // Айди взять из БД, название книги получить через запрос в монолит
 
+    private boolean isSubscriptionRelevant(Subscription subscription, BookEvent bookEvent) {
+        return switch (subscription.getType()) {
+            case CREATE_BOOK_BY_SPECIFIC_AUTHOR -> subscription.getReferenceId().equals(bookEvent.getAuthorId());
+            case CREATE_BOOK_BY_SPECIFIC_GENRE -> subscription.getReferenceId().equals(bookEvent.getGenreId());
+            default -> false;
+        };
+    }
+
+    private NotificationEvent generateNotificationEvent(Subscription subscription, BookResponseDTO book) {
+        String message;
+
+        switch (subscription.getType()) {
+            case CREATE_BOOK_BY_SPECIFIC_AUTHOR:
+                String authorFirstName = book.getAuthor() != null ? book.getAuthor().getFirstName() : "";
+                String authorLastName = book.getAuthor() != null ? book.getAuthor().getLastName() : "";
+                String authorFullName = (authorFirstName + " " + authorLastName).trim().replaceAll("\\s+", " ");
+
+                message = String.format("Ваш любимый автор %s опубликовал книгу: \"%s\"",
+                        authorFullName.isEmpty() ? "Неизвестный автор" : authorFullName,
+                        book.getTitle());
+                break;
+
+            case CREATE_BOOK_BY_SPECIFIC_GENRE:
+                String genreName = book.getGenre() != null ? book.getGenre().getName() : "Неизвестный жанр";
+                message = String.format("В вашем любимом жанре %s опубликована книга: \"%s\"",
+                        genreName, book.getTitle());
+                break;
+
+            case DELETE_BOOK:
+                message = String.format("Ваша книга:: \"%s\" была удалена",
+                        book.getTitle());
+                break;
+
+            default:
+                throw new IllegalArgumentException("Неизвестный тип подписки: " + subscription.getType());
+        }
+
+        return NotificationEvent.builder()
+                .mail(subscription.getContactInfo().getEmail())
+                .message(message)
+                .build();
+    }
 }
