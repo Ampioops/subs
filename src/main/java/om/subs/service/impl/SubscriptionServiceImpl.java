@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import om.subs.client.LibraryClient;
 import om.subs.entity.ContactInfo;
 import om.subs.entity.Subscription;
-import om.subs.kafka.producer.NotificationEventKafkaProducer;
+import om.subs.service.kafka.producer.NotificationEventKafkaProducer;
 import om.subs.mapper.SubscriptionMapper;
 import om.subs.model.enums.SubscriptionType;
 import om.subs.service.SubscriptionService;

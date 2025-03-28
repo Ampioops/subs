@@ -1,4 +1,4 @@
-package om.subs.kafka.consumer;
+package om.subs.service.kafka.consumer;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

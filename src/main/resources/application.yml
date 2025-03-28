@@ -10,4 +10,3 @@ spring:
     name: subs
   main:
     web-application-type: servlet
-

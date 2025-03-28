@@ -1,4 +1,4 @@
-package om.subs.kafka.producer;
+package om.subs.service.kafka.producer;
 
 import lombok.RequiredArgsConstructor;
 import org.common.common_utils.event.NotificationEvent;
