@@ -9,8 +9,10 @@ import om.subs.model.request.ContactInfoRequest;
 import om.subs.model.response.ContactInfoResponse;
 import om.subs.repository.ContactInfoRepository;
 import om.subs.service.ContactInfoService;
+import om.subs.specification.ContactInfoSpecification;
 import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,7 @@ public class ContactInfoServiceImpl implements ContactInfoService {
 
     private final ContactInfoRepository contactInfoRepository;
     private final ContactInfoMapper contactInfoMapper;
+    private final ContactInfoSpecification contactInfoSpecification;
 
     @NotNull
     @Transactional
@@ -30,7 +33,11 @@ public class ContactInfoServiceImpl implements ContactInfoService {
             throw new RuntimeException("Invalid contact information");
         }
 
-        ContactInfo contactInfo =  contactInfoMapper.toContactInfo(request);
+        ContactInfo contactInfo =  ContactInfo.builder()
+                .userId(request.getUserId())
+                .email(request.getEmail())
+                .numberPhone(request.getNumberPhone())
+                .build();
 
         return contactInfoMapper.toResponse(contactInfoRepository.save(contactInfo));
     }
@@ -38,21 +45,30 @@ public class ContactInfoServiceImpl implements ContactInfoService {
     @NotNull
     @Transactional
     public ContactInfoResponse updateUserContactInfo(Integer id, ContactInfoRequest request) {
-        return null;
+        ContactInfo contactInfo = contactInfoRepository.findById(id).orElseThrow(() -> new RuntimeException("Book with id = [%s] not found".formatted(id)));
+        contactInfo.setUserId(request.getUserId());
+        contactInfo.setEmail(request.getEmail());
+        contactInfo.setNumberPhone(request.getNumberPhone());
+        return contactInfoMapper.toResponse(contactInfoRepository.save(contactInfo));
     }
 
     @NotNull
     public void deleteContactInfoById(Integer id) {
-
+        ContactInfo contactInfo = contactInfoRepository.findById(id).orElseThrow(() -> new RuntimeException("Book with id = [%s] not found".formatted(id)));
+        contactInfoRepository.delete(contactInfo);
     }
 
     @NotNull
     public Page<ContactInfoResponse> getUsersContactInfo(ContactInfoParam params, Integer offset, Integer limit) {
-        return null;
+        PageRequest pageRequest = PageRequest.of(offset, limit);
+        return contactInfoRepository.findAll(contactInfoSpecification.build(params), pageRequest)
+                .map(contactInfoMapper::toResponse);
     }
 
     @NotNull
     public ContactInfoResponse getContactInfoByUserId(Integer userId) {
-        return null;
+        ContactInfo contactInfo = contactInfoRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Book with id = [%s] not found".formatted(userId)));;
+        return contactInfoMapper.toResponse(contactInfo);
     }
 }

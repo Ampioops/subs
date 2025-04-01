@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Setter
 @Getter
-@Schema(description = "Параметры автора")
+@Schema(description = "Параметры подписки")
 public class SubscriptionParam {
 
     @Schema(description = "Содержит id пользователя")
